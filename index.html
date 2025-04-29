@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typography Calculator</title>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      color: #333;
+    }
+    
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+    
+    #display {
+      font-size: 1.8rem;
+      background: white;
+      border: 2px solid #ccc;
+      padding: 1rem;
+      width: 350px;
+      min-height: 2.5rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      border-radius: 5px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow-wrap: break-word;
+    }
+    
+    .calculator-container {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 70px);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    button {
+      padding: 0.8rem;
+      font-size: 1.2rem;
+      background: white;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+    
+    button:hover {
+      background-color: #f5f5f5;
+    }
+    
+    button:active {
+      transform: scale(0.95);
+      background-color: #e9e9e9;
+    }
+    
+    .number {
+      background-color: #fff;
+      font-weight: bold;
+    }
+    
+    .operator {
+      background-color: #f0f0f0;
+    }
+    
+    .action {
+      background-color: #4285f4;
+      color: white;
+      border-color: #3367d6;
+    }
+    
+    .action:hover {
+      background-color: #3367d6;
+    }
+    
+    #result {
+      margin-top: 2rem;
+      font-size: 5rem;
+      transition: all 0.3s ease;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .history {
+      margin-top: 2rem;
+      width: 350px;
+    }
+    
+    .history h3 {
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.5rem;
+    }
+    
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+    
+    .history-item:hover {
+      background-color: #f5f5f5;
+    }
+    
+    .formula {
+      font-family: monospace;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .controls button {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="calculator-container">
+    <div id="display"></div>
+    
+    <div class="buttons">
+      <!-- 자음 버튼 -->
+      <button onclick="addToInput('ㄱ')">ㄱ</button>
+      <button onclick="addToInput('ㄴ')">ㄴ</button>
+      <button onclick="addToInput('ㄷ')">ㄷ</button>
+      <button onclick="addToInput('ㄹ')">ㄹ</button>
+      <button onclick="addToInput('ㅁ')">ㅁ</button>
+      <button onclick="addToInput('ㅂ')">ㅂ</button>
+      <button onclick="addToInput('ㅅ')">ㅅ</button>
+      <button onclick="addToInput('ㅇ')">ㅇ</button>
+      <button onclick="addToInput('ㅈ')">ㅈ</button>
+      <button onclick="addToInput('ㅊ')">ㅊ</button>
+      <button onclick="addToInput('ㅋ')">ㅋ</button>
+      <button onclick="addToInput('ㅌ')">ㅌ</button>
+      <button onclick="addToInput('ㅍ')">ㅍ</button>
+      <button onclick="addToInput('ㅎ')">ㅎ</button>
+      <button onclick="addToInput('ㄲ')">ㄲ</button>
+      
+      <!-- 모음 버튼 -->
+      <button onclick="addToInput('ㅏ')">ㅏ</button>
+      <button onclick="addToInput('ㅑ')">ㅑ</button>
+      <button onclick="addToInput('ㅓ')">ㅓ</button>
+      <button onclick="addToInput('ㅕ')">ㅕ</button>
+      <button onclick="addToInput('ㅗ')">ㅗ</button>
+      <button onclick="addToInput('ㅛ')">ㅛ</button>
+      <button onclick="addToInput('ㅜ')">ㅜ</button>
+      <button onclick="addToInput('ㅠ')">ㅠ</button>
+      <button onclick="addToInput('ㅡ')">ㅡ</button>
+      <button onclick="addToInput('ㅣ')">ㅣ</button>
+      
+      <!-- 숫자 버튼 -->
+      <button class="number" onclick="addToInput('1')">1</button>
+      <button class="number" onclick="addToInput('2')">2</button>
+      <button class="number" onclick="addToInput('3')">3</button>
+      <button class="number" onclick="addToInput('4')">4</button>
+      <button class="number" onclick="addToInput('5')">5</button>
+      <button class="number" onclick="addToInput('6')">6</button>
+      <button class="number" onclick="addToInput('7')">7</button>
+      <button class="number" onclick="addToInput('8')">8</button>
+      <button class="number" onclick="addToInput('9')">9</button>
+      <button class="number" onclick="addToInput('0')">0</button>
+      <button class="number" onclick="addToInput('.')">.</button>
+      
+      <!-- 연산자 버튼 -->
+      <button class="operator" onclick="addToInput('+')">+</button>
+      <button class="operator" onclick="addToInput('*')">×</button>
+      <button class="operator" onclick="addToInput('^')">^</button>
+      <button class="operator" onclick="addToInput('-')">-</button>
+      <button class="operator" onclick="addToInput('(')">(</button>
+      <button class="operator" onclick="addToInput(')')">)</button>
+      <button class="operator" onclick="addToInput(' ')">␣</button>
+      <button class="operator" onclick="backspace()">⌫</button>
+      <button class="action" onclick="clearInput()">AC</button>
+      <button class="action" onclick="calculate()">=</button>
+    </div>
+    
+    <div class="controls">
+      <button onclick="saveToHistory()">저장</button>
+      <button onclick="saveToPdf()">PDF</button>
+    </div>
+    
+    <div id="result"></div>
+  </div>
+  
+  <div class="history">
+    <h3>계산 기록</h3>
+    <div id="history-list"></div>
+  </div>
+
+  <script>
+    let input = "";
+    let history = [];
+    let currentResult = null;
+    
+    function addToInput(val) {
+      input += val;
+      updateDisplay();
+    }
+    
+    function updateDisplay() {
+      document.getElementById("display").textContent = input;
+    }
+    
+    function backspace() {
+      input = input.slice(0, -1);
+      updateDisplay();
+    }
+    
+    function clearInput() {
+      input = "";
+      updateDisplay();
+      resetResult();
+    }
+    
+    function resetResult() {
+      document.getElementById("result").textContent = "";
+      document.getElementById("result").style.transform = "none";
+      document.getElementById("result").style.letterSpacing = "normal";
+      document.getElementById("result").style.fontWeight = "normal";
+      currentResult = null;
+    }
+    
+    // 한글 자소 조합 함수
+    function combineJamo(cho, jung, jong = '') {
+      const chosung = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+      const jungsung = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ";
+      const jongsung = " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ";
+      
+      const choIndex = chosung.indexOf(cho);
+      const jungIndex = jungsung.indexOf(jung);
+      const jongIndex = jongsung.indexOf(jong || " ");
+      
+      if (choIndex === -1 || jungIndex === -1) return null;
+      
+      const code = 44032 + (choIndex * 21 * 28) + (jungIndex * 28) + jongIndex;
+      return String.fromCharCode(code);
+    }
+    
+    // 수식 파싱 함수
+    function parseFormula(formula) {
+      try {
+        // 기본 자소 조합: ㅎ+ㅏ+ㄴ
+        let chars = [];
+        let transform = { scale: 1, rotate: 0, spacing: 0, weight: 400 };
+        
+        // 복합 연산자 처리
+        if (formula.includes("*") || formula.includes("^") || formula.includes("-")) {
+          // 괄호가 있는 복합 수식: (ㅎ+ㅏ+ㄴ)*2.5
+          const matches = formula.match(/\(([^)]+)\)([*\^+-])(\d*\.?\d+)/);
+          
+          if (matches) {
+            const baseFormula = matches[1];
+            const operator = matches[2];
+            const value = parseFloat(matches[3]);
+            
+            // 기본 자소 조합 처리
+            chars = processBasicFormula(baseFormula);
+            
+            // 변형 연산자 적용
+            switch(operator) {
+              case "*":
+                transform.weight = 400 * value;
+                break;
+              case "^":
+                transform.rotate = value;
+                break;
+              case "+":
+                transform.spacing = value;
+                break;
+              case "-":
+                transform.spacing = -value;
+                break;
+            }
+          } else {
+            // 중첩 괄호 수식: ((ㅎ+ㅏ+ㄴ)*2.5)-1
+            const nestedMatches = formula.match(/\(\(([^)]+)\)([*\^])(\d*\.?\d+)\)([+-])(\d*\.?\d+)/);
+            
+            if (nestedMatches) {
+              const baseFormula = nestedMatches[1];
+              const firstOp = nestedMatches[2];
+              const firstVal = parseFloat(nestedMatches[3]);
+              const secondOp = nestedMatches[4];
+              const secondVal = parseFloat(nestedMatches[5]);
+              
+              // 기본 자소 조합 처리
+              chars = processBasicFormula(baseFormula);
+              
+              // 첫번째 변형 연산자 적용
+              if (firstOp === "*") {
+                transform.weight = 400 * firstVal;
+              } else if (firstOp === "^") {
+                transform.rotate = firstVal;
+              }
+              
+              // 두번째 변형 연산자 적용
+              if (secondOp === "+") {
+                transform.spacing = secondVal;
+              } else if (secondOp === "-") {
+                transform.spacing = -secondVal;
+              }
+            } else {
+              // 단일 연산자: ㅎ+ㅏ+ㄴ*2.5
+              const simpleMatches = formula.match(/(.+?)([*\^+-])(\d*\.?\d+)$/);
+              
+              if (simpleMatches) {
+                const baseFormula = simpleMatches[1];
+                const operator = simpleMatches[2];
+                const value = parseFloat(simpleMatches[3]);
+                
+                // 기본 자소 조합 처리
+                chars = processBasicFormula(baseFormula);
+                
+                // 변형 연산자 적용
+                switch(operator) {
+                  case "*":
+                    transform.weight = 400 * value;
+                    break;
+                  case "^":
+                    transform.rotate = value;
+                    break;
+                  case "+":
+                    transform.spacing = value;
+                    break;
+                  case "-":
+                    transform.spacing = -value;
+                    break;
+                }
+              }
+            }
+          }
+        } else {
+          // 기본 자소 조합만 있는 경우
+          chars = processBasicFormula(formula);
+        }
+        
+        return { 
+          text: chars.join(''), 
+          transform: transform
+        };
+      } catch (e) {
+        console.error("수식 파싱 오류:", e);
+        return null;
+      }
+    }
+    
+    // 기본 자소 조합 처리 함수
+    function processBasicFormula(formula) {
+      const parts = formula.split('+').map(p => p.trim()).filter(Boolean);
+      let chars = [];
+      
+      for (let i = 0; i < parts.length; i += 3) {
+        const ch = parts[i], ju = parts[i+1], jo = parts[i+2] || '';
+        if (!ch || !ju) continue;
+        
+        const char = combineJamo(ch, ju, jo);
+        if (char) {
+          chars.push(char);
+        }
+      }
+      
+      return chars;
+    }
+    
+    function calculate() {
+      try {
+        if (!input) return;
+        
+        const parsed = parseFormula(input);
+        if (!parsed) {
+          document.getElementById("result").textContent = "오류: 올바른 수식을 입력하세요";
+          return;
+        }
+        
+        const resultEl = document.getElementById("result");
+        resultEl.textContent = parsed.text;
+        
+        if (parsed.transform) {
+          const { rotate, weight, spacing } = parsed.transform;
+          resultEl.style.transform = `rotate(${rotate}deg)`;
+          resultEl.style.fontWeight = weight;
+          resultEl.style.letterSpacing = `${spacing}px`;
+        }
+        
+        currentResult = {
+          formula: input,
+          text: parsed.text,
+          transform: parsed.transform
+        };
+      } catch (e) {
+        document.getElementById("result").textContent = "오류가 발생했습니다";
+        console.error(e);
+      }
+    }
+    
+    function saveToHistory() {
+      if (!currentResult) return;
+      
+      history.unshift(currentResult);
+      if (history.length > 10) history.pop(); // 최대 10개만 유지
+      
+      updateHistoryList();
+    }
+    
+    function updateHistoryList() {
+      const historyList = document.getElementById("history-list");
+      historyList.innerHTML = "";
+      
+      history.forEach((item, index) => {
+        const itemEl = document.createElement("div");
+        itemEl.className = "history-item";
+        itemEl.dataset.index = index;
+        itemEl.onclick = function() { loadFromHistory(index); };
+        
+        const formulaEl = document.createElement("div");
+        formulaEl.className = "formula";
+        formulaEl.textContent = item.formula;
+        
+        const resultEl = document.createElement("div");
+        resultEl.textContent = item.text;
+        
+        itemEl.appendChild(formulaEl);
+        itemEl.appendChild(resultEl);
+        historyList.appendChild(itemEl);
+      });
+    }
+    
+    function loadFromHistory(index) {
+      const item = history[index];
+      if (!item) return;
+      
+      input = item.formula;
+      updateDisplay();
+      
+      const resultEl = document.getElementById("result");
+      resultEl.textContent = item.text;
+      
+      if (item.transform) {
+        const { rotate, weight, spacing } = item.transform;
+        resultEl.style.transform = `rotate(${rotate}deg)`;
+        resultEl.style.fontWeight = weight;
+        resultEl.style.letterSpacing = `${spacing}px`;
+      }
+      
+      currentResult = item;
+    }
+    
+    function saveToPdf() {
+      alert("PDF 저장 기능은 실제 서버 환경에서 구현할 수 있습니다.\n브라우저의 인쇄 기능(Ctrl+P)을 사용해 PDF로 저장해보세요.");
+    }
+  </script>
+</body>
+</html>
